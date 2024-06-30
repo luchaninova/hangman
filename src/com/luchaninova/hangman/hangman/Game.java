@@ -104,6 +104,6 @@ public class Game {
 
     private static String getWord() throws IOException {
         FileReader fileReader = new FileReader();
-        return fileReader.readFromFile();
+        return fileReader.read();
     }
 }
