@@ -6,11 +6,12 @@ import java.util.Random;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class FileReader{
+public class FileReader implements Reader{
 
     Random rand = new Random();
 
-    public String readFromFile() throws IOException {
+    @Override
+    public String read() {
         String fileName = "file/words.txt";
         try (RandomAccessFile randomAccessFile = new RandomAccessFile(fileName, "r")){
             int fileLength = Integer.parseInt(randomAccessFile.readLine());
