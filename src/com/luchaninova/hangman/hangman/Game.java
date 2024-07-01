@@ -1,9 +1,10 @@
 package com.luchaninova.hangman.hangman;
 
 import com.luchaninova.hangman.letter.LetterIndex;
-import com.luchaninova.hangman.printer.ConsolePrinter;
+
 import com.luchaninova.hangman.reader.ConsoleReader;
 import com.luchaninova.hangman.reader.FileReader;
+import com.luchaninova.hangman.reader.Reader;
 
 
 import java.io.IOException;
@@ -12,8 +13,7 @@ import java.util.*;
 
 public class Game {
 
-    ConsolePrinter consolePrinter = new ConsolePrinter();
-    ConsoleReader consoleReader = new ConsoleReader();
+    Reader consoleReader = new ConsoleReader();
     PrintHangman printHangman = new PrintHangman();
     LetterCheck letterCheck = new LetterCheck();
 
@@ -22,14 +22,14 @@ public class Game {
         if (message.equalsIgnoreCase("1")) {
             launchGame();
         } else {
-            consolePrinter.print("Выход из игры");
+            System.out.println("Выход из игры");
             consoleReader.close();
         }
     }
 
     private void launchGame() throws IOException {
-        consolePrinter.print(("Начнем игру! Я выбрал слово, угадай его. Выбери букву русского алфавита >>>" +
-                "%nЕсли угадаешь, в слове откроеться буква.%nУ тебя 6 попыток").formatted());
+        System.out.printf("Начнем игру! Я выбрал слово, угадай его. Выбери букву русского алфавита >>>" +
+                "%nЕсли угадаешь, в слове откроеться буква.%nУ тебя 6 попыток%n");
         printHangman.printHangmanPicture("Здесь отобразятся ошибки", 0);
 
         String word = getWord();
@@ -38,27 +38,27 @@ public class Game {
         List<LetterIndex> letterIndices = getLetterIndexList(wordCharArray);
         char[] guessArr = new char[wordCharArray.length];
         Arrays.fill(guessArr, '*');
-        consolePrinter.print("Это загаданное слово, все буквы закрыты звездочками");
+        System.out.println("Это загаданное слово, все буквы закрыты звездочками");
         System.out.println(guessArr);
 
         int mistakesCount = 1;
         Set<Character> characters = new HashSet<>();
 
         doGame(letterIndices, lettersToOpen, guessArr, word, mistakesCount, characters);
-        consolePrinter.print("Игра закончена. Сыграем еще? Набери 1 для новой игры или любую клавишу для выхода");
+        System.out.println("Игра закончена. Сыграем еще? Набери 1 для новой игры или любую клавишу для выхода");
         start(consoleReader.read());
     }
 
     private void doGame(List<LetterIndex> letterIndices, int lettersToOpen, char[] guessArr, String word, int mistakesCount,
                         Set<Character> characters) {
-        while (!isEnd(lettersToOpen, mistakesCount, consolePrinter, word)) {
-            consolePrinter.print("Нужно набрать 1ну букву русского алфавита");
+        while (!isEnd(lettersToOpen, mistakesCount, word)) {
+            System.out.println("Нужно набрать 1ну букву русского алфавита");
             String letter = consoleReader.read();
             Character characterLetter = 0;
             if (letterCheck.isValidLetter(letter)) {
                 characterLetter = letter.charAt(0);
                 if (letterCheck.isRepeatedLetter(characters, characterLetter)) {
-                    consolePrinter.print("Эта буква уже была");
+                    System.out.println("Эта буква уже была");
                     continue;
                 } else {
                     characters.add(characterLetter);
@@ -73,24 +73,24 @@ public class Game {
         }
     }
 
-    private static boolean isEnd(int lettersToOpen, int mistakesCount, ConsolePrinter consolePrinter, String word) {
+    private static boolean isEnd(int lettersToOpen, int mistakesCount, String word) {
         if (lettersToOpen == 0 || mistakesCount == 7) {
             if (lettersToOpen == 0) {
-                isWin(true, consolePrinter, word);
+                isWin(true, word);
             }
             if (mistakesCount == 7) {
-                isWin(false, consolePrinter, word);
+                isWin(false, word);
             }
             return true;
         }
         return false;
     }
 
-    private static void isWin(boolean win, ConsolePrinter consolePrinter, String word) {
+    private static void isWin(boolean win, String word) {
         if (win) {
-            consolePrinter.print("Поздравляем! Это победа");
+            System.out.println("Поздравляем! Это победа");
         } else {
-            consolePrinter.print("Увы, проиграш. Было загадано слово <<<" + word + ">>>");
+            System.out.println("Увы, проиграш. Было загадано слово <<<" + word + ">>>");
         }
     }
 
@@ -102,7 +102,7 @@ public class Game {
         return list;
     }
 
-    private static String getWord() throws IOException {
+    private static String getWord() {
         FileReader fileReader = new FileReader();
         return fileReader.read();
     }

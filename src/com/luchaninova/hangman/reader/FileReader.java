@@ -10,6 +10,9 @@ public class FileReader implements Reader{
 
     Random rand = new Random();
 
+
+
+
     @Override
     public String read() {
         String fileName = "file/words.txt";
@@ -27,6 +30,11 @@ public class FileReader implements Reader{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void close() { // default implementation ignored
+
     }
 
     public int getRandomPosition(int max) {
