@@ -29,6 +29,11 @@ public class FileReader {
         }
     }
 
+    @Override
+    public void close() { // default implementation ignored
+
+    }
+
     public int getRandomPosition(int max) {
         return rand.nextInt(1, max);
     }
