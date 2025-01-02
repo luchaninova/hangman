@@ -2,7 +2,7 @@ package com.luchaninova.hangman.reader;
 
 import java.util.Scanner;
 
-public class ConsoleReader implements Reader {
+public class KeyboardReader implements IReader {
 
     Scanner scanner = new Scanner(System.in);
 
